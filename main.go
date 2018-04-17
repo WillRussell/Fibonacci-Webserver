@@ -1,13 +1,13 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"net/http"
-	"github.com/gorilla/mux"
-	"strconv"
-	"strings"
-	"encoding/json"
+    "fmt"
+    "log"
+    "net/http"
+    "github.com/gorilla/mux"
+    "strconv"
+    "strings"
+    "encoding/json"
 )
 
 
@@ -30,36 +30,36 @@ func fibonacci() func() int {
 }
 
 
-func generateFibonacci(w http.ResponseWriter, r *http.Request) {
+func generateFibonacci(w http.ResponseWriter, r * http.Request) {
 
-	var collection []int
-	var placeholder int
+    var collection[] int
+    var placeholder int
 
-	parsedNumber := parseInput(r.URL.Path)
-	f := fibonacci()
+    parsedNumber := parseInput(r.URL.Path)
+    f := fibonacci()
 
- 	for i := 0; i < parsedNumber; i++ {
-		placeholder = f()
-		collection = append(collection, placeholder)
- 	}
+    for i := 0; i < parsedNumber; i++ {
+        placeholder = f()
+        collection = append(collection, placeholder)
+    }
 
     result, _ := json.Marshal(collection)
 
-    w.Header().Set("Access-Control-Allow-Origin", "*") 	// allow cross domain AJAX requests
-	w.Header().Set("Content-Type", "application/json") // set content-type so client knows to expect json
-	w.WriteHeader(201)
+    w.Header().Set("Access-Control-Allow-Origin", "*") // allow cross domain AJAX requests
+    w.Header().Set("Content-Type", "application/json") // set content-type so client knows to expect json
+    w.WriteHeader(201)
     w.Write(result)
 }
 
 
 func handleRequests() {
-	myRouter := mux.NewRouter().StrictSlash(true)
-	myRouter.HandleFunc("/{id:[0-9]+}", generateFibonacci).Methods("GET")
-	log.Fatal(http.ListenAndServe(":8080", myRouter))
+    myRouter := mux.NewRouter().StrictSlash(true)
+    myRouter.HandleFunc("/{id:[0-9]+}", generateFibonacci).Methods("GET")
+    log.Fatal(http.ListenAndServe(":8080", myRouter))
 }
 
 
 func main() {
-	fmt.Println("Starting server on 8080...")
-	handleRequests()
+    fmt.Println("Starting server on 8080...")
+    handleRequests()
 }
